@@ -169,6 +169,10 @@ class RedisCacher extends BaseCacher {
 	 * @memberof Cacher
 	 */
 	set(key, data, ttl) {
+		if(_.isEmpty(data)) {
+			this.logger.debug(`SKIP SET ${key}: data empty`);
+			return Promise.resolve();
+		}
 		this.metrics.increment(METRIC.MOLECULER_CACHER_SET_TOTAL);
 		const timeEnd = this.metrics.timer(METRIC.MOLECULER_CACHER_SET_TIME);
 
